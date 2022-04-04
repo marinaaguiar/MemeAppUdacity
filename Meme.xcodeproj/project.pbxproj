@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9C56858C27F768D1006A2340 /* Meme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C56858B27F768D1006A2340 /* Meme.swift */; };
 		9C5AF7CC27D900C700BDE1B5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5AF7CB27D900C700BDE1B5 /* AppDelegate.swift */; };
 		9C5AF7CE27D900C700BDE1B5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5AF7CD27D900C700BDE1B5 /* SceneDelegate.swift */; };
 		9C5AF7D027D900C700BDE1B5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5AF7CF27D900C700BDE1B5 /* ViewController.swift */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9C56858B27F768D1006A2340 /* Meme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Meme.swift; sourceTree = "<group>"; };
 		9C5AF7C827D900C700BDE1B5 /* Meme.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Meme.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C5AF7CB27D900C700BDE1B5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9C5AF7CD27D900C700BDE1B5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -59,6 +61,7 @@
 				9C5AF7CB27D900C700BDE1B5 /* AppDelegate.swift */,
 				9C5AF7CD27D900C700BDE1B5 /* SceneDelegate.swift */,
 				9C5AF7CF27D900C700BDE1B5 /* ViewController.swift */,
+				9C56858B27F768D1006A2340 /* Meme.swift */,
 				9C5AF7D127D900C700BDE1B5 /* Main.storyboard */,
 				9C5AF7D427D900C900BDE1B5 /* Assets.xcassets */,
 				9C5AF7D627D900C900BDE1B5 /* LaunchScreen.storyboard */,
@@ -139,6 +142,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9C5AF7D027D900C700BDE1B5 /* ViewController.swift in Sources */,
+				9C56858C27F768D1006A2340 /* Meme.swift in Sources */,
 				9C5AF7CC27D900C700BDE1B5 /* AppDelegate.swift in Sources */,
 				9C5AF7CE27D900C700BDE1B5 /* SceneDelegate.swift in Sources */,
 			);

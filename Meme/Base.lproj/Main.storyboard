@@ -45,7 +45,7 @@
                                     <constraint firstAttribute="height" constant="44" id="jIw-lH-hha"/>
                                 </constraints>
                                 <items>
-                                    <navigationItem title="Title" id="inh-Vw-opK">
+                                    <navigationItem title="Create Meme" id="inh-Vw-opK">
                                         <barButtonItem key="leftBarButtonItem" systemItem="action" id="3bo-JG-qE7">
                                             <connections>
                                                 <action selector="shareButtonPressed:" destination="BYZ-38-t0r" id="BTE-tG-TLN"/>
@@ -64,15 +64,15 @@
                                 <subviews>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="text" textAlignment="center" adjustsFontSizeToFit="NO" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="gma-lM-5nO">
                                         <rect key="frame" x="0.0" y="0.0" width="382" height="376.5"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="41"/>
-                                        <textInputTraits key="textInputTraits"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters"/>
                                     </textField>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="text" textAlignment="center" adjustsFontSizeToFit="NO" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="DO9-pW-ULf">
                                         <rect key="frame" x="0.0" y="376.5" width="382" height="376.5"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="41"/>
-                                        <textInputTraits key="textInputTraits"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters"/>
                                     </textField>
                                 </subviews>
                                 <constraints>
