@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import LinkPresentation
 
 class ViewController: UIViewController {
     
@@ -17,41 +18,76 @@ class ViewController: UIViewController {
     @IBOutlet weak var topTextField: UITextField!
     @IBOutlet weak var bottomTextField: UITextField!
     
+    @IBOutlet weak var memeView: UIView!
+        
     var activeTextField : UITextField? = nil
             
     override func viewDidLoad() {
         super.viewDidLoad()
-        topTextField.text = "TOP"
-        bottomTextField.text = "BOTTOM"
         topTextField.delegate = self
         bottomTextField.delegate = self
+        setupPlaceHolder()
         setupFont()
-        hideKeyboardWhenTappedAround()
+        shareButton.isEnabled = false
         
         // call the 'keyboardWillShow' function when the view controller receive the notification that a keyboard is going to be shown
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
       
           // call the 'keyboardWillHide' function when the view controller receive notification that keyboard is going to be hidden
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
-      
     }
     
     //MARK: - Methods
     
     @IBAction func shareButtonPressed(_ sender: Any) {
+        
+        guard let memedImage = generateMemedImage() else {
+            let alert = UIAlertController(
+                title: "Failed to generate meme image",
+                message: "Please try again.",
+                preferredStyle: .alert
+            )
+            
+            alert.addAction(.init(title: "OK", style: .default, handler: { _ in
+                        alert.dismiss(animated: true)}))
+            
+            self.present(alert, animated: true, completion: nil)
+            return
+        }
+        
+        let items = [memedImage]
+        let activityController = UIActivityViewController(
+            activityItems: items,
+            applicationActivities: nil
+        )
+        
+        activityController.completionWithItemsHandler = { (activityType: UIActivity.ActivityType?, completed:
+        Bool, arrayReturnedItems: [Any]?, error: Error?) in
+            if completed {
+                print("share completed")
+                self.save()
+                return
+            } else {
+                print("cancel")
+            }
+        }
+        present(activityController, animated: true)
     }
     
     @IBAction func cancelButtonPressed(_ sender: Any) {
         topTextField.text = "TOP"
         bottomTextField.text = "BOTTOM"
         imagePickerView.image = nil
+        shareButton.isEnabled = false
     }
     
     @IBAction func pickAnImageFromCameraPressed(_ sender: Any) {
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = self
         imagePicker.sourceType = .camera
+        imagePicker.allowsEditing = true
         present(imagePicker, animated: true, completion: nil)
+        shareButton.isEnabled = true
     }
     
     @IBAction func pickAnImageFromAlbumPressed(_ sender: Any) {
@@ -60,30 +96,36 @@ class ViewController: UIViewController {
         imagePicker.sourceType = .photoLibrary
         imagePicker.allowsEditing = true
         present(imagePicker, animated: true, completion: nil)
+        shareButton.isEnabled = true
     }
     
     func save() {
         // Create the meme
-        let meme = Meme(topText: topTextField.text!, bottomText: bottomTextField.text!, originalImage: imagePickerView.image!, memedImage: generateMemedImage())
+        let meme = Meme(
+            topText: topTextField.text!,
+            bottomText: bottomTextField.text!,
+            originalImage: imagePickerView.image!,
+            memedImage: generateMemedImage()
+        )
+        print("image saved")
     }
     
-    func generateMemedImage() -> UIImage {
+    func generateMemedImage() -> UIImage? {
+
+        let renderer = UIGraphicsImageRenderer(bounds: memeView.bounds)
         
-        // Render view to an image
-        UIGraphicsBeginImageContext(self.view.frame.size)
-        view.drawHierarchy(in: self.view.frame, afterScreenUpdates: true)
-        let memedImage:UIImage = UIGraphicsGetImageFromCurrentImageContext()!
-        UIGraphicsEndImageContext()
-        
-        return memedImage
+        return renderer.image { context in
+            memeView.layer.render(in: context.cgContext)
+            memeView.draw(memeView.layer, in: context.cgContext)
+        }
     }
     
     func setupFont() {
         let memeTextAttributes: [NSAttributedString.Key: Any] = [
             NSAttributedString.Key.foregroundColor: UIColor.white,
             NSAttributedString.Key.strokeColor: UIColor.black,
-            NSAttributedString.Key.font: UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
-            NSAttributedString.Key.strokeWidth:  5
+            NSAttributedString.Key.font: UIFont(name: "HelveticaNeue-CondensedBlack", size: 55)!,
+            NSAttributedString.Key.strokeWidth: -5
         ]
         
         topTextField.defaultTextAttributes = memeTextAttributes
@@ -91,8 +133,18 @@ class ViewController: UIViewController {
         topTextField.textAlignment = .center
         bottomTextField.textAlignment = .center
     }
+    
+    func setupPlaceHolder() {
+        topTextField.text = "TOP"
+        bottomTextField.text = "BOTTOM"
+    }
+        
+    func activityViewController(activityViewController: UIActivityViewController, thumbnailImageForActivityType activityType: String!, suggestedSize size: CGSize) -> UIImage! {
+        return UIImage(named: "AppIcon")
+    }
 }
 
+    
 //MARK: - UIImagePickerControllerDelegate
 
 extension ViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
@@ -174,17 +226,3 @@ extension ViewController: UITextFieldDelegate {
       self.view.frame.origin.y = 0
     }
 }
-
-extension UIViewController {
-    func hideKeyboardWhenTappedAround() {
-        let tap = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
-        tap.cancelsTouchesInView = false
-        view.addGestureRecognizer(tap)
-    }
-    
-    @objc func dismissKeyboard() {
-        view.endEditing(true)
-    }
-}
-
-
