@@ -96,11 +96,11 @@ class ViewController: UIViewController {
         let imagePicker =  UIImagePickerController()
         imagePicker.delegate = self
         imagePicker.sourceType = .photoLibrary
-        imagePicker.allowsEditing = true
+        imagePicker.allowsEditing = false
         present(imagePicker, animated: true, completion: nil)
         shareButton.isEnabled = true
     }
-    
+
     func saveImage() {
         
         let memeImage = generateMemedImage()
@@ -159,14 +159,17 @@ class ViewController: UIViewController {
 //MARK: - UIImagePickerControllerDelegate
 
 extension ViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        if let image = info[UIImagePickerController.InfoKey.init(rawValue: "UIImagePickerControllerEditedImage")] as? UIImage {
-            imagePickerView.image = image
+        if let pickedImage = info[UIImagePickerController.InfoKey.init(rawValue: "UIImagePickerControllerOriginalImage")] as? UIImage {
+            imagePickerView.contentMode = .scaleAspectFit
+            imagePickerView.image = pickedImage
         }
         picker.dismiss(animated: true, completion: nil)
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        print("cancel")
         picker.dismiss(animated: true, completion: nil)
     }
 }
