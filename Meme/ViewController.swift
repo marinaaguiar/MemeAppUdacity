@@ -65,7 +65,7 @@ class ViewController: UIViewController {
         Bool, arrayReturnedItems: [Any]?, error: Error?) in
             if completed {
                 print("share completed")
-                self.save()
+                self.saveImage()
                 return
             } else {
                 print("cancel")
@@ -99,7 +99,7 @@ class ViewController: UIViewController {
         shareButton.isEnabled = true
     }
     
-    func save() {
+    func saveImage() {
         
         let memeImage = generateMemedImage()
         guard let memeImage = memeImage else { return }
