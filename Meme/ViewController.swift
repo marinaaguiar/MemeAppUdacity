@@ -28,7 +28,9 @@ class ViewController: UIViewController {
         bottomTextField.delegate = self
         setupPlaceHolder()
         setupFont()
+        enableCamera()
         shareButton.isEnabled = false
+        
         
         // call the 'keyboardWillShow' function when the view controller receive the notification that a keyboard is going to be shown
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -121,6 +123,14 @@ class ViewController: UIViewController {
         }
     }
     
+    func enableCamera() {
+        if UIImagePickerController.isSourceTypeAvailable(.camera){
+            cameraButton.isEnabled = true
+        } else {
+            cameraButton.isEnabled = false
+        }
+    }
+        
     func setupFont() {
         let memeTextAttributes: [NSAttributedString.Key: Any] = [
             NSAttributedString.Key.foregroundColor: UIColor.white,
