@@ -31,15 +31,14 @@ class ViewController: UIViewController {
         enableCamera()
         shareButton.isEnabled = false
         
-        
         // call the 'keyboardWillShow' function when the view controller receive the notification that a keyboard is going to be shown
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
       
           // call the 'keyboardWillHide' function when the view controller receive notification that keyboard is going to be hidden
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
-    
-    //MARK: - Methods
+
+    //MARK: - Interaction Methods
     
     @IBAction func shareButtonPressed(_ sender: Any) {
         
