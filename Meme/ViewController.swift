@@ -4,8 +4,8 @@
 //
 //  Created by Marina Aguiar on 3/9/22.
 //
-
 import UIKit
+import Photos
 import LinkPresentation
 
 class ViewController: UIViewController {
@@ -100,13 +100,14 @@ class ViewController: UIViewController {
     }
     
     func save() {
-        // Create the meme
-        let meme = Meme(
-            topText: topTextField.text!,
-            bottomText: bottomTextField.text!,
-            originalImage: imagePickerView.image!,
-            memedImage: generateMemedImage()
-        )
+        
+        let memeImage = generateMemedImage()
+        guard let memeImage = memeImage else { return }
+        PHPhotoLibrary.shared().performChanges {
+            _ = PHAssetChangeRequest.creationRequestForAsset(from: memeImage)
+        } completionHandler: { (success, error) in
+            
+        }
         print("image saved")
     }
     
