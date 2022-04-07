@@ -8,7 +8,7 @@ import UIKit
 import Photos
 import LinkPresentation
 
-class ViewController: UIViewController {
+class MemeEditorViewController: UIViewController {
     
     @IBOutlet weak var shareButton: UIBarButtonItem!
     @IBOutlet weak var cancelButton: UIBarButtonItem!
@@ -24,8 +24,6 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        topTextField.delegate = self
-        bottomTextField.delegate = self
         setupPlaceHolder()
         setupTextField(textField: topTextField)
         setupTextField(textField: bottomTextField)
@@ -33,10 +31,10 @@ class ViewController: UIViewController {
         shareButton.isEnabled = false
         
         // call the 'keyboardWillShow' function when the view controller receive the notification that a keyboard is going to be shown
-        NotificationCenter.default.addObserver(self, selector: #selector(ViewController.keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(MemeEditorViewController.keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
 
         // call the 'keyboardWillHide' function when the view controller receive notification that keyboard is going to be hidden
-        NotificationCenter.default.addObserver(self, selector: #selector(ViewController.keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(MemeEditorViewController.keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 
     //MARK: - Interaction Methods
@@ -66,11 +64,11 @@ class ViewController: UIViewController {
         activityController.completionWithItemsHandler = { (activityType: UIActivity.ActivityType?, completed: Bool, arrayReturnedItems: [Any]?, error: Error?) in
 
             if completed {
-                print("share completed")
+                debugPrint("share completed")
                 self.saveImage()
                 return
             } else {
-                print("cancel")
+                debugPrint("cancel")
             }
         }
         present(activityController, animated: true)
@@ -104,8 +102,8 @@ class ViewController: UIViewController {
         } completionHandler: { (success, error) in
             
         }
-        print(meme)
-        print("image saved")
+        debugPrint(meme)
+        debugPrint("image saved")
     }
     
     func generateMemedImage() -> UIImage? {
@@ -123,6 +121,9 @@ class ViewController: UIViewController {
     }
 
     func setupTextField(textField: UITextField) {
+
+        textField.delegate = self
+
         let textAttributes: [NSAttributedString.Key: Any] = [
             NSAttributedString.Key.foregroundColor: UIColor.white,
             NSAttributedString.Key.strokeColor: UIColor.black,
@@ -148,7 +149,7 @@ class ViewController: UIViewController {
 
 //MARK: - UIImagePickerControllerDelegate
 
-extension ViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+extension MemeEditorViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
 
@@ -160,7 +161,7 @@ extension ViewController: UIImagePickerControllerDelegate, UINavigationControlle
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        print("cancel")
+        debugPrint("cancel")
         picker.dismiss(animated: true, completion: nil)
     }
 
@@ -176,7 +177,7 @@ extension ViewController: UIImagePickerControllerDelegate, UINavigationControlle
 
 //MARK: - UITextFieldDelegate
 
-extension ViewController: UITextFieldDelegate {
+extension MemeEditorViewController: UITextFieldDelegate {
 
     func textFieldDidBeginEditing(_ textField: UITextField) {
         
@@ -229,7 +230,7 @@ extension ViewController: UITextFieldDelegate {
         }
 
         if(shouldMoveViewUp) {
-            self.view.frame.origin.y = 0 - keyboardSize.height
+            self.view.frame.origin.y = -keyboardSize.height
         }
     }
     
