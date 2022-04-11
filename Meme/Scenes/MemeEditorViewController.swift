@@ -104,6 +104,11 @@ class MemeEditorViewController: UIViewController {
         }
         debugPrint(meme)
         debugPrint("image saved")
+
+        // Add it to the memes array on the application delegate
+        let object = UIApplication.shared.delegate
+        let appDelegate = object as! AppDelegate
+        appDelegate.memes.append(meme)
     }
     
     func generateMemedImage() -> UIImage? {
