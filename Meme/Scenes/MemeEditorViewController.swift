@@ -1,15 +1,17 @@
-//
-//  ViewController.swift
-//  Meme
-//
-//  Created by Marina Aguiar on 3/9/22.
-//
 import UIKit
 import Photos
 import LinkPresentation
 
+// MARK: - UIViewController
+
 class MemeEditorViewController: UIViewController {
-    
+
+    // MARK: Properties
+
+    var activeTextField : UITextField? = nil
+
+    // MARK: Outlets
+
     @IBOutlet weak var shareButton: UIBarButtonItem!
     @IBOutlet weak var cancelButton: UIBarButtonItem!
     @IBOutlet weak var cameraButton: UIBarButtonItem!
@@ -17,10 +19,9 @@ class MemeEditorViewController: UIViewController {
     @IBOutlet weak var imagePickerView: UIImageView!
     @IBOutlet weak var topTextField: UITextField!
     @IBOutlet weak var bottomTextField: UITextField!
-    
     @IBOutlet weak var memeView: UIView!
 
-    var activeTextField : UITextField? = nil
+    // MARK: Life Cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,16 +63,9 @@ class MemeEditorViewController: UIViewController {
         )
         
         activityController.completionWithItemsHandler = { (activityType: UIActivity.ActivityType?, completed: Bool, arrayReturnedItems: [Any]?, error: Error?) in
-
-            if completed {
-                debugPrint("share completed")
-                self.saveImage()
-                return
-            } else {
-                debugPrint("cancel")
-            }
         }
-        present(activityController, animated: true)
+
+        present(activityController, animated: true, completion: {self.saveImage()})
     }
     
     @IBAction func cancelButtonPressed(_ sender: Any) {
@@ -102,14 +96,17 @@ class MemeEditorViewController: UIViewController {
         } completionHandler: { (success, error) in
             
         }
-        debugPrint(meme)
-        debugPrint("image saved")
 
         // Add it to the memes array on the application delegate
         let object = UIApplication.shared.delegate
         let appDelegate = object as! AppDelegate
         appDelegate.memes.append(meme)
+
+        debugPrint(meme)
+        debugPrint("image saved")
     }
+
+    //MARK: - Methods
     
     func generateMemedImage() -> UIImage? {
 
@@ -150,7 +147,6 @@ class MemeEditorViewController: UIViewController {
         return UIImage(named: "AppIcon")
     }
 }
-
 
 //MARK: - UIImagePickerControllerDelegate
 
