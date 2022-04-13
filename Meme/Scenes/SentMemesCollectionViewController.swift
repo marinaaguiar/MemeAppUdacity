@@ -56,25 +56,10 @@ extension SentMemesCollectionViewController: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: memesCollectionViewCell.identifier, for: indexPath) as! SentMemesCollectionViewCell
 
         cell.memeImageView.image = memes[indexPath.row].memedImage
-        debugPrint(memes[0].memedImage)
-
-//        cell.imageView!.image = memes[indexPath.row].memedImage
+        cell.memeImageView.backgroundColor = .darkGray
+        cell.memeImageView.contentMode = .scaleAspectFill
 
         return cell
     }
 }
-
-
-
-
-//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//
-//        let detailController = self.storyboard!.instantiateViewController(withIdentifier: "MemeDetailViewController") as! MemeDetailViewController
-//
-//        //Populate view controller with data from the selected item
-//        detailController.detailImageView.image = memes[(indexPath as NSIndexPath).row].memedImage
-//
-//        // Present the view controller using navigation
-//        navigationController!.pushViewController(detailController, animated: true)
-//    }
 

@@ -11,8 +11,13 @@ class MemeDetailViewController: UIViewController {
 
     @IBOutlet weak var detailImageView: UIImageView!
 
+    var meme: Meme!
+
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        tabBarController?.tabBar.isHidden = true
+        detailImageView.image = meme.memedImage
 
     }
 

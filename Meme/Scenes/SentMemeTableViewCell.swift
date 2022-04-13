@@ -9,6 +9,9 @@ import UIKit
 
 class SentMemesTableViewCell: UITableViewCell {
 
+    @IBOutlet weak var memeImageView: UIImageView!
+    @IBOutlet weak var memeTitleLabel: UILabel!
+    
     let identifier = "TableViewCell"
 
 //    override func awakeFromNib() {

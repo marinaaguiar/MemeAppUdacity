@@ -82,6 +82,13 @@ class MemeEditorViewController: UIViewController {
         pickImage(source: .photoLibrary)
     }
 
+    //Pinch Gesture for zoom in and zoom out
+    @IBAction func scaleImg(_ sender: UIPinchGestureRecognizer) {
+       imagePickerView.transform = CGAffineTransform(scaleX: sender.scale, y: sender.scale)
+    }
+
+    //MARK: - Methods
+
     func saveImage() {
 
         guard let topText = topTextField.text,
@@ -106,8 +113,6 @@ class MemeEditorViewController: UIViewController {
         debugPrint("image saved")
     }
 
-    //MARK: - Methods
-    
     func generateMemedImage() -> UIImage? {
 
         let renderer = UIGraphicsImageRenderer(bounds: memeView.bounds)

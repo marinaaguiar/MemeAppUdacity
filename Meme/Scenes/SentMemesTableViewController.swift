@@ -6,6 +6,8 @@ class SentMemesTableViewController: UIViewController {
 
     // MARK: Properties
 
+    let memesTableViewCell = SentMemesTableViewCell()
+
     var memes: [Meme]! {
         let object = UIApplication.shared.delegate
         let appDelegate = object as! AppDelegate
@@ -15,13 +17,13 @@ class SentMemesTableViewController: UIViewController {
     // MARK: Outlets
 
     @IBOutlet private weak var tableView: UITableView!
-    let memesTableViewCell = SentMemesTableViewCell()
 
     // MARK: Life Cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.dataSource = self
+        self.tableView.delegate = self
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -46,10 +48,24 @@ extension SentMemesTableViewController: UITableViewDataSource {
 
         let cell = tableView.dequeueReusableCell(withIdentifier: memesTableViewCell.identifier) as! SentMemesTableViewCell
 
-        cell.imageView?.image = memes[indexPath.row].memedImage
-        debugPrint(memes[0].memedImage)
+        cell.memeImageView.image = memes[indexPath.row].memedImage
+        cell.memeImageView.backgroundColor = .darkGray
+        cell.memeImageView.contentMode = .scaleAspectFill
+        cell.memeTitleLabel.text = "\(memes[indexPath.row].topTexField) \(memes[indexPath.row].bottomTextField)"
 
         return cell
+    }
+}
+
+// MARK: - UITableViewDelegate
+
+extension SentMemesTableViewController: UITableViewDelegate {
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+
+        let detailViewController = self.storyboard!.instantiateViewController(withIdentifier: "DetailViewController") as! MemeDetailViewController
+        detailViewController.meme = self.memes[indexPath.row]
+        self.navigationController?.pushViewController(detailViewController, animated: true)
     }
 }
 
