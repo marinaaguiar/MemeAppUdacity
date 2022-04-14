@@ -63,16 +63,47 @@ class MemeEditorViewController: UIViewController {
         )
         
         activityController.completionWithItemsHandler = { (activityType: UIActivity.ActivityType?, completed: Bool, arrayReturnedItems: [Any]?, error: Error?) in
+
+            if completed {
+                debugPrint("share completed")
+                self.saveImage()
+                return
+            } else {
+                debugPrint("cancel")
+                return
+            }
         }
 
-        present(activityController, animated: true, completion: {self.saveImage()})
+        present(activityController, animated: true, completion: nil)
     }
     
     @IBAction func cancelButtonPressed(_ sender: Any) {
-        topTextField.text = "TOP"
-        bottomTextField.text = "BOTTOM"
-        imagePickerView.image = nil
-        shareButton.isEnabled = false
+
+        if imagePickerView != nil {
+
+            // Declare Alert message
+            let alert = UIAlertController(title: "Discard Meme?", message: "You will lose the meme you created", preferredStyle: .alert)
+
+            // Create Cancel button with action handler
+            let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: { (action) -> Void in
+                alert.dismiss(animated: true)
+                print("cancel button tapped")
+               })
+
+            // Create Discard button with action handler
+            let discard = UIAlertAction(title: "Discard", style: .destructive) { (action) -> Void in
+                alert.dismiss(animated: true)
+                self.dismiss(animated: true)
+            }
+            //Add Cancel and Discard button to dialog message
+            alert.addAction(cancel)
+            alert.addAction(discard)
+
+            // Present dialog message to user
+            self.present(alert, animated: true, completion: nil)
+
+            print("create alert")
+        }
     }
     
     @IBAction func pickAnImageFromCameraPressed(_ sender: Any) {

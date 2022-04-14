@@ -6,8 +6,6 @@ class SentMemesTableViewController: UIViewController {
 
     // MARK: Properties
 
-    let memesTableViewCell = SentMemesTableViewCell()
-
     var memes: [Meme]! {
         let object = UIApplication.shared.delegate
         let appDelegate = object as! AppDelegate
@@ -16,19 +14,20 @@ class SentMemesTableViewController: UIViewController {
 
     // MARK: Outlets
 
-    @IBOutlet private weak var tableView: UITableView!
+    @IBOutlet private weak var tableView: UITableView?
 
     // MARK: Life Cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.tableView.dataSource = self
-        self.tableView.delegate = self
+        self.tableView?.dataSource = self
+        self.tableView?.delegate = self
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        tableView.reloadData()
+        tableView?.reloadData()
+        tabBarController?.tabBar.isHidden = false
     }
 }
 
@@ -46,7 +45,7 @@ extension SentMemesTableViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        let cell = tableView.dequeueReusableCell(withIdentifier: memesTableViewCell.identifier) as! SentMemesTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "TableViewCell") as! SentMemesTableViewCell
 
         cell.memeImageView.image = memes[indexPath.row].memedImage
         cell.memeImageView.backgroundColor = .darkGray
