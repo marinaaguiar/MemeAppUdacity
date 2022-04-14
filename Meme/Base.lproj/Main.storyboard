@@ -95,7 +95,11 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Sent Memes" id="Ele-S6-1xP">
-                        <barButtonItem key="leftBarButtonItem" systemItem="edit" id="Sty-KS-vvr"/>
+                        <barButtonItem key="leftBarButtonItem" systemItem="edit" id="Sty-KS-vvr">
+                            <connections>
+                                <action selector="editButtonPressed:" destination="5rd-ix-JGP" id="c62-wF-ZFL"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="Uo1-AZ-9QB">
                             <connections>
                                 <segue destination="E1S-pV-BhE" kind="presentation" modalPresentationStyle="fullScreen" id="xA9-Dx-NKZ"/>
@@ -107,6 +111,7 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rYk-zP-f79" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="5rd-ix-JGP" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="2685.5999999999999" y="-1250.2463054187192"/>
         </scene>
@@ -217,13 +222,13 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="8Vz-qg-bVV">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="646"/>
                                         <subviews>
-                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="top text" textAlignment="center" minimumFontSize="20" translatesAutoresizingMaskIntoConstraints="NO" id="XAN-ge-FK8">
+                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="top text" textAlignment="center" minimumFontSize="15" translatesAutoresizingMaskIntoConstraints="NO" id="XAN-ge-FK8">
                                                 <rect key="frame" x="123" y="0.0" width="129" height="323"/>
                                                 <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="40"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters"/>
                                             </textField>
-                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="bottom text" textAlignment="center" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="1wf-bE-vqr">
+                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="bottom text" textAlignment="center" minimumFontSize="15" translatesAutoresizingMaskIntoConstraints="NO" id="1wf-bE-vqr">
                                                 <rect key="frame" x="90" y="323" width="195" height="323"/>
                                                 <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="40"/>

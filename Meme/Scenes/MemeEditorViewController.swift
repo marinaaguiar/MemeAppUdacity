@@ -67,13 +67,13 @@ class MemeEditorViewController: UIViewController {
             if completed {
                 debugPrint("share completed")
                 self.saveImage()
+                self.dismiss(animated: true)
                 return
             } else {
                 debugPrint("cancel")
                 return
             }
         }
-
         present(activityController, animated: true, completion: nil)
     }
     
@@ -87,7 +87,7 @@ class MemeEditorViewController: UIViewController {
             // Create Cancel button with action handler
             let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: { (action) -> Void in
                 alert.dismiss(animated: true)
-                print("cancel button tapped")
+                debugPrint("cancel button tapped")
                })
 
             // Create Discard button with action handler
@@ -102,10 +102,14 @@ class MemeEditorViewController: UIViewController {
             // Present dialog message to user
             self.present(alert, animated: true, completion: nil)
 
-            print("create alert")
+            debugPrint("create alert")
         }
     }
-    
+
+    @IBAction func editButtonPressed(_ sender: Any) {
+
+    }
+
     @IBAction func pickAnImageFromCameraPressed(_ sender: Any) {
         pickImage(source: .camera)    }
     
