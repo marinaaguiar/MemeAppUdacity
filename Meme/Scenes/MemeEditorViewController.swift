@@ -9,6 +9,7 @@ class MemeEditorViewController: UIViewController {
     // MARK: Properties
 
     var activeTextField : UITextField? = nil
+    var meme: Meme!
 
     // MARK: Outlets
 
@@ -104,10 +105,6 @@ class MemeEditorViewController: UIViewController {
 
             debugPrint("create alert")
         }
-    }
-
-    @IBAction func editButtonPressed(_ sender: Any) {
-
     }
 
     @IBAction func pickAnImageFromCameraPressed(_ sender: Any) {

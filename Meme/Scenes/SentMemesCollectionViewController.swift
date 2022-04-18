@@ -2,7 +2,9 @@ import UIKit
 
 // MARK: - UIViewController
 
-class SentMemesCollectionViewController: UIViewController, UICollectionViewDelegate {
+class SentMemesCollectionViewController: UIViewController {
+
+    let isDebug = false
 
     // MARK: Properties
 
@@ -25,12 +27,10 @@ class SentMemesCollectionViewController: UIViewController, UICollectionViewDeleg
         super.viewDidLoad()
         self.collectionView.dataSource = self
         self.collectionView.delegate = self
-
     }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-
         setFlowLayout()
     }
 
@@ -51,9 +51,7 @@ class SentMemesCollectionViewController: UIViewController, UICollectionViewDeleg
         flowLayout.minimumInteritemSpacing = space
         flowLayout.minimumLineSpacing = space
         flowLayout.sectionInset = UIEdgeInsets(top: 0, left: inset, bottom: 0, right: inset)
-
         flowLayout.itemSize = CGSize(width: dimension, height: dimension)
-        flowLayout.estimatedItemSize = CGSize(width: dimension, height: dimension)
     }
 }
 
@@ -62,13 +60,20 @@ class SentMemesCollectionViewController: UIViewController, UICollectionViewDeleg
 extension SentMemesCollectionViewController: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if isDebug {
+            return 3
+        }
+
         return memes.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: memesCollectionViewCell.identifier, for: indexPath) as! SentMemesCollectionViewCell
 
-//        cell.backgroundColor = (indexPath.item % 2) == 0 ? .systemOrange : .systemTeal
+        if isDebug {
+            cell.backgroundColor = (indexPath.item % 2) == 0 ? .systemOrange : .systemTeal
+            return cell
+        }
 
         cell.memeImageView.image = memes[indexPath.row].memedImage
         cell.memeImageView.backgroundColor = .darkGray
@@ -81,7 +86,12 @@ extension SentMemesCollectionViewController: UICollectionViewDataSource {
 
 // MARK: - UICollectionViewDelegate
 
-extension SentMemesTableViewController: UICollectionViewDelegate {
+extension SentMemesCollectionViewController: UICollectionViewDelegate {
+
+    func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+        print("hi honey")
+        return true
+    }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 
@@ -90,6 +100,5 @@ extension SentMemesTableViewController: UICollectionViewDelegate {
         self.navigationController?.pushViewController(detailViewController, animated: true)
 
         print(memes[indexPath.row].topTexField)
-
     }
 }

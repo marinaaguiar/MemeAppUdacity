@@ -15,6 +15,7 @@ class SentMemesTableViewController: UIViewController {
     // MARK: Outlets
 
     @IBOutlet private weak var tableView: UITableView?
+    @IBOutlet private var editButton: UIBarButtonItem!
 
     // MARK: Life Cycle
 
@@ -28,6 +29,35 @@ class SentMemesTableViewController: UIViewController {
         super.viewWillAppear(animated)
         tableView?.reloadData()
         tabBarController?.tabBar.isHidden = false
+        enableEditButton()
+    }
+
+    // MARK: Interaction Methods
+
+    @IBAction func editButtonPressed(_ sender: Any) {
+
+        if tableView?.isEditing == false {
+            // Toggle table view editing.
+            editButton.style = .done
+            editButton.title = "Done"
+            tableView?.setEditing(true, animated: true)
+
+        } else {
+            editButton.style = .plain
+            editButton.title = "Edit"
+            tableView?.setEditing(false, animated: true)
+        }
+    }
+
+    // MARK: Methods
+
+    func enableEditButton() {
+
+        if memes.count == 0 {
+            editButton.isEnabled = false
+        } else {
+            editButton.isEnabled = true
+        }
     }
 }
 
@@ -62,14 +92,14 @@ extension SentMemesTableViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
-        let detailViewController = self.storyboard!.instantiateViewController(withIdentifier: "DetailViewController") as! MemeDetailViewController
-        detailViewController.meme = self.memes[indexPath.row]
-        self.navigationController?.pushViewController(detailViewController, animated: true)
+            let detailViewController = self.storyboard!.instantiateViewController(withIdentifier: "DetailViewController") as! MemeDetailViewController
+            detailViewController.meme = self.memes[indexPath.row]
+            self.navigationController?.pushViewController(detailViewController, animated: true)
     }
 
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
 
+        if editingStyle == .delete {
             // Declare Alert message
             let alert = UIAlertController(title: "Discard Meme?", message: "You will lose the meme you created", preferredStyle: .alert)
 
@@ -94,7 +124,8 @@ extension SentMemesTableViewController: UITableViewDelegate {
 
             // Present dialog message to user
             self.present(alert, animated: true, completion: nil)
-
         }
     }
 }
+
+
