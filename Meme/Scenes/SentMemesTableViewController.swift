@@ -15,20 +15,20 @@ class SentMemesTableViewController: UIViewController {
 
     // MARK: Outlets
 
-    @IBOutlet private weak var tableView: UITableView?
+    @IBOutlet private weak var tableView: UITableView!
     @IBOutlet private var editButton: UIBarButtonItem!
 
     // MARK: Lifecycle Methods
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.tableView?.dataSource = self
-        self.tableView?.delegate = self
+        self.tableView.dataSource = self
+        self.tableView.delegate = self
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        tableView?.reloadData()
+        tableView.reloadData()
         tabBarController?.tabBar.isHidden = false
         enableEditButton()
     }
@@ -37,16 +37,16 @@ class SentMemesTableViewController: UIViewController {
 
     @IBAction func editButtonPressed(_ sender: Any) {
 
-        if tableView?.isEditing == false {
+        if tableView.isEditing == false {
             // Toggle table view editing.
             editButton.style = .done
             editButton.title = "Done"
-            tableView?.setEditing(true, animated: true)
+            tableView.setEditing(true, animated: true)
 
         } else {
             editButton.style = .plain
             editButton.title = "Edit"
-            tableView?.setEditing(false, animated: true)
+            tableView.setEditing(false, animated: true)
         }
     }
 

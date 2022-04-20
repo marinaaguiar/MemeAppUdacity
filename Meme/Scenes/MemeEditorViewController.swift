@@ -66,13 +66,7 @@ class MemeEditorViewController: UIViewController {
             if completed {
                 debugPrint("share completed")
                 self.saveMeme()
-
-                if self.meme != nil {
-                    self.navigationController?.popToRootViewController(animated: true)
-                } else {
-                    self.dismiss(animated: true)
-                }
-
+                self.dismiss()
                 return
             } else {
                 debugPrint("cancel")
@@ -81,7 +75,8 @@ class MemeEditorViewController: UIViewController {
         }
         present(activityController, animated: true, completion: nil)
     }
-    
+
+
     @IBAction func cancelButtonPressed(_ sender: Any) {
 
         if self.meme != nil {
@@ -89,22 +84,31 @@ class MemeEditorViewController: UIViewController {
             let alert = UIAlertController(title: "Save Edit Meme", message: "Would you like to save the edited meme?", preferredStyle: .alert)
 
             // Create Save button with action handler
-            let save = UIAlertAction(title: "Save", style: .cancel) { (action) -> Void in
+            let save = UIAlertAction(title: "Save", style: .default) { (action) -> Void in
                 DispatchQueue.global(qos: .userInitiated).async {
                     self.saveMeme()
                 }
-                self.navigationController?.popToRootViewController(animated: true)
+                self.dismiss()
             }
 
             // Create Cancel button with action handler
-            let cancel = UIAlertAction(title: "Cancel", style: .default, handler: { (action) -> Void in
+            let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: { (action) -> Void in
                 alert.dismiss(animated: true)
                 debugPrint("cancel button tapped")
             })
 
+            // Create Discard button with action handler
+            let discard = UIAlertAction(title: "Discard Changes", style: .destructive, handler: { (action) -> Void in
+                alert.dismiss(animated: true)
+                self.dismiss()
+                debugPrint("discard button tapped")
+            })
+
+
             //Add Cancel and Discard button to dialog message
-            alert.addAction(cancel)
             alert.addAction(save)
+            alert.addAction(cancel)
+            alert.addAction(discard)
 
             // Present dialog message to user
             self.present(alert, animated: true, completion: nil)
@@ -122,7 +126,7 @@ class MemeEditorViewController: UIViewController {
             // Create Discard button with action handler
             let discard = UIAlertAction(title: "Discard", style: .destructive) { (action) -> Void in
                 alert.dismiss(animated: true)
-                self.dismiss(animated: true)
+                self.dismiss()
             }
             //Add Cancel and Discard button to dialog message
             alert.addAction(cancel)
@@ -142,9 +146,22 @@ class MemeEditorViewController: UIViewController {
         pickImage(source: .photoLibrary)
     }
 
-    //Pinch Gesture for zoom in and zoom out
-    @IBAction func scaleImg(_ sender: UIPinchGestureRecognizer) {
-        imagePickerView.transform = CGAffineTransform(scaleX: sender.scale, y: sender.scale)
+    @IBAction func scaleImage(_ sender: UIPinchGestureRecognizer) {
+        guard let imagePickerView = imagePickerView else {
+          return
+        }
+        let scale = sender.scale
+        imagePickerView.transform = imagePickerView.transform.scaledBy(x: scale, y: scale)
+        sender.scale = 1
+    }
+
+    @IBAction func rotateImage(_ sender: UIRotationGestureRecognizer) {
+        guard let imagePickerView = imagePickerView else {
+          return
+        }
+        let rotation = sender.rotation
+        imagePickerView.transform = imagePickerView.transform.rotated(by: rotation)
+        sender.rotation = 0
     }
 
     //MARK: - Methods
@@ -156,7 +173,6 @@ class MemeEditorViewController: UIViewController {
             shareButton.isEnabled = true
         }
     }
-
 
     func saveMeme() {
 
@@ -225,13 +241,23 @@ class MemeEditorViewController: UIViewController {
     func setup() {
 
         if let existingMeme = self.meme {
+            navigationItem.title = "Edit Meme"
             topTextField.text = existingMeme.topTexField
             bottomTextField.text = existingMeme.bottomTextField
             imagePickerView.image = existingMeme.originalImage
         } else {
+            navigationItem.title = "Create Meme"
             topTextField.text = "TOP"
             bottomTextField.text = "BOTTOM"
             imagePickerView.image = nil
+        }
+    }
+
+    func dismiss() {
+        if self.meme != nil {
+            self.navigationController?.popToRootViewController(animated: true)
+        } else {
+            self.dismiss(animated: true)
         }
     }
 
@@ -330,5 +356,23 @@ extension MemeEditorViewController: UITextFieldDelegate {
     @objc func keyboardWillHide(notification: NSNotification) {
         // move back the root view origin to zero
         self.view.frame.origin.y = 0
+    }
+}
+
+extension MemeEditorViewController: UIGestureRecognizerDelegate {
+
+    func applyGestureRecognizer() {
+        
+        let rotation = UIRotationGestureRecognizer(target: self , action: #selector(rotateImage(_:)))
+        rotation.delegate = self
+        imagePickerView.addGestureRecognizer(rotation)
+
+        let zoomGesture = UIPinchGestureRecognizer(target: self , action: #selector(scaleImage(_:)))
+        zoomGesture.delegate = self
+        imagePickerView.addGestureRecognizer(zoomGesture)
+    }
+
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
     }
 }
