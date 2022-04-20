@@ -6,10 +6,11 @@ class SentMemesTableViewController: UIViewController {
 
     // MARK: Properties
 
-    var memes: [Meme]! {
+    var memesList: [Meme]! {
         let object = UIApplication.shared.delegate
         let appDelegate = object as! AppDelegate
-        return appDelegate.memes
+        let sortedMemes = appDelegate.memes.values.sorted()
+        return sortedMemes
     }
 
     // MARK: Outlets
@@ -17,7 +18,7 @@ class SentMemesTableViewController: UIViewController {
     @IBOutlet private weak var tableView: UITableView?
     @IBOutlet private var editButton: UIBarButtonItem!
 
-    // MARK: Life Cycle
+    // MARK: Lifecycle Methods
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,7 +54,7 @@ class SentMemesTableViewController: UIViewController {
 
     func enableEditButton() {
 
-        if memes.count == 0 {
+        if memesList.count == 0 {
             editButton.isEnabled = false
         } else {
             editButton.isEnabled = true
@@ -66,7 +67,7 @@ class SentMemesTableViewController: UIViewController {
 extension SentMemesTableViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return memes.count
+        return memesList.count
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -77,10 +78,10 @@ extension SentMemesTableViewController: UITableViewDataSource {
 
         let cell = tableView.dequeueReusableCell(withIdentifier: "TableViewCell") as! SentMemesTableViewCell
 
-        cell.memeImageView.image = memes[indexPath.row].memedImage
+        cell.memeImageView.image = memesList[indexPath.row].memedImage
         cell.memeImageView.backgroundColor = .darkGray
         cell.memeImageView.contentMode = .scaleAspectFill
-        cell.memeTitleLabel.text = "\(memes[indexPath.row].topTexField) \(memes[indexPath.row].bottomTextField)"
+        cell.memeTitleLabel.text = "\(memesList[indexPath.row].topTexField) \(memesList[indexPath.row].bottomTextField)"
 
         return cell
     }
@@ -93,7 +94,7 @@ extension SentMemesTableViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
             let detailViewController = self.storyboard!.instantiateViewController(withIdentifier: "DetailViewController") as! MemeDetailViewController
-            detailViewController.meme = self.memes[indexPath.row]
+            detailViewController.meme = self.memesList[indexPath.row]
             self.navigationController?.pushViewController(detailViewController, animated: true)
     }
 
@@ -113,7 +114,7 @@ extension SentMemesTableViewController: UITableViewDelegate {
             let discard = UIAlertAction(title: "Discard", style: .destructive) { (action) -> Void in
                 let object = UIApplication.shared.delegate
                 let appDelegate = object as! AppDelegate
-                appDelegate.memes.remove(at: indexPath.row)
+                appDelegate.memes.removeValue(forKey: self.memesList[indexPath.row].id)
                 tableView.deleteRows(at: [indexPath], with: .fade)
                 alert.dismiss(animated: true)
                 self.dismiss(animated: true)

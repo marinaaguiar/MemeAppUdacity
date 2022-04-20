@@ -17,7 +17,7 @@ class MemeDetailViewController: UIViewController {
 
     @IBOutlet weak var detailImageView: UIImageView!
 
-    // MARK: Life Cycle
+    // MARK: Lifecycle Methods
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,6 +31,7 @@ class MemeDetailViewController: UIViewController {
     @IBAction func editButtonPressed(_ sender: Any) {
 
         let memeEditorViewController = self.storyboard!.instantiateViewController(withIdentifier: "MemeEditorViewController") as! MemeEditorViewController
+        memeEditorViewController.meme = meme
         self.navigationController?.pushViewController(memeEditorViewController, animated: true)
     }
 }

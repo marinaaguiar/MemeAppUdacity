@@ -8,9 +8,16 @@
 import Foundation
 import UIKit
 
-struct Meme {
+struct Meme: Comparable {
+
+    let id: UUID!
+    let createdDate: Date
     let topTexField: String
     let bottomTextField: String
     let originalImage: UIImage
     let memedImage: UIImage
+
+    static func < (lhs: Meme, rhs: Meme) -> Bool {
+        lhs.createdDate < rhs.createdDate
+    }
 }

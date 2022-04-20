@@ -10,10 +10,13 @@ class SentMemesCollectionViewController: UIViewController {
 
     let memesCollectionViewCell = SentMemesCollectionViewCell()
 
-    var memes: [Meme]! {
+    var memesList: [Meme]! {
         let object = UIApplication.shared.delegate
         let appDelegate = object as! AppDelegate
-        return appDelegate.memes
+
+        let sortedMemes = appDelegate.memes.values.sorted()
+
+        return sortedMemes
     }
 
     // MARK: Outlets
@@ -21,7 +24,7 @@ class SentMemesCollectionViewController: UIViewController {
     @IBOutlet private weak var collectionView: UICollectionView!
     @IBOutlet weak var flowLayout: UICollectionViewFlowLayout!
 
-    // MARK: Life Cycle
+    // MARK: Lifecycle Methods
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,7 +67,7 @@ extension SentMemesCollectionViewController: UICollectionViewDataSource {
             return 3
         }
 
-        return memes.count
+        return memesList.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -75,7 +78,7 @@ extension SentMemesCollectionViewController: UICollectionViewDataSource {
             return cell
         }
 
-        cell.memeImageView.image = memes[indexPath.row].memedImage
+        cell.memeImageView.image = memesList[indexPath.row].memedImage
         cell.memeImageView.backgroundColor = .darkGray
         cell.memeImageView.contentMode = .scaleAspectFill
         cell.memeImageView.clipsToBounds = true
@@ -96,9 +99,9 @@ extension SentMemesCollectionViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 
         let detailViewController = self.storyboard!.instantiateViewController(withIdentifier: "DetailViewController") as! MemeDetailViewController
-        detailViewController.meme = self.memes[indexPath.row]
+        detailViewController.meme = self.memesList[indexPath.row]
         self.navigationController?.pushViewController(detailViewController, animated: true)
 
-        print(memes[indexPath.row].topTexField)
+        print(memesList[indexPath.row].topTexField)
     }
 }

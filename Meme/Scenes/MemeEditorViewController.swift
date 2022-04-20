@@ -8,8 +8,9 @@ class MemeEditorViewController: UIViewController {
 
     // MARK: Properties
 
-    var activeTextField : UITextField? = nil
-    var meme: Meme!
+    var activeTextField: UITextField? = nil
+    var meme: Meme?
+    let id: UUID = UUID.init()
 
     // MARK: Outlets
 
@@ -22,16 +23,16 @@ class MemeEditorViewController: UIViewController {
     @IBOutlet weak var bottomTextField: UITextField!
     @IBOutlet weak var memeView: UIView!
 
-    // MARK: Life Cycle
+    // MARK: Lifecycle Methods
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupPlaceHolder()
+        setup()
         setupTextField(textField: topTextField)
         setupTextField(textField: bottomTextField)
         enableCamera()
-        shareButton.isEnabled = false
-        
+        enableShareButton()
+
         // call the 'keyboardWillShow' function when the view controller receive the notification that a keyboard is going to be shown
         NotificationCenter.default.addObserver(self, selector: #selector(MemeEditorViewController.keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
 
@@ -39,20 +40,17 @@ class MemeEditorViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(MemeEditorViewController.keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 
+
     //MARK: - Interaction Methods
     
     @IBAction func shareButtonPressed(_ sender: Any) {
         
         guard let memedImage = generateMemedImage() else {
-            let alert = UIAlertController(
-                title: "Failed to generate meme image",
-                message: "Please try again.",
-                preferredStyle: .alert
-            )
-            
+            let alert = UIAlertController(title: "Failed to generate meme image", message: "Please try again.", preferredStyle: .alert)
+
             alert.addAction(.init(title: "OK", style: .default, handler: { _ in
                 alert.dismiss(animated: true)}))
-            
+
             self.present(alert, animated: true, completion: nil)
             return
         }
@@ -67,8 +65,14 @@ class MemeEditorViewController: UIViewController {
 
             if completed {
                 debugPrint("share completed")
-                self.saveImage()
-                self.dismiss(animated: true)
+                self.saveMeme()
+
+                if self.meme != nil {
+                    self.navigationController?.popToRootViewController(animated: true)
+                } else {
+                    self.dismiss(animated: true)
+                }
+
                 return
             } else {
                 debugPrint("cancel")
@@ -80,8 +84,32 @@ class MemeEditorViewController: UIViewController {
     
     @IBAction func cancelButtonPressed(_ sender: Any) {
 
-        if imagePickerView != nil {
+        if self.meme != nil {
+            // Declare Alert message
+            let alert = UIAlertController(title: "Save Edit Meme", message: "Would you like to save the edited meme?", preferredStyle: .alert)
 
+            // Create Save button with action handler
+            let save = UIAlertAction(title: "Save", style: .cancel) { (action) -> Void in
+                DispatchQueue.global(qos: .userInitiated).async {
+                    self.saveMeme()
+                }
+                self.navigationController?.popToRootViewController(animated: true)
+            }
+
+            // Create Cancel button with action handler
+            let cancel = UIAlertAction(title: "Cancel", style: .default, handler: { (action) -> Void in
+                alert.dismiss(animated: true)
+                debugPrint("cancel button tapped")
+            })
+
+            //Add Cancel and Discard button to dialog message
+            alert.addAction(cancel)
+            alert.addAction(save)
+
+            // Present dialog message to user
+            self.present(alert, animated: true, completion: nil)
+
+        } else {
             // Declare Alert message
             let alert = UIAlertController(title: "Discard Meme?", message: "You will lose the meme you created", preferredStyle: .alert)
 
@@ -89,7 +117,7 @@ class MemeEditorViewController: UIViewController {
             let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: { (action) -> Void in
                 alert.dismiss(animated: true)
                 debugPrint("cancel button tapped")
-               })
+            })
 
             // Create Discard button with action handler
             let discard = UIAlertAction(title: "Discard", style: .destructive) { (action) -> Void in
@@ -102,13 +130,13 @@ class MemeEditorViewController: UIViewController {
 
             // Present dialog message to user
             self.present(alert, animated: true, completion: nil)
-
-            debugPrint("create alert")
         }
+        debugPrint("create alert")
     }
 
     @IBAction func pickAnImageFromCameraPressed(_ sender: Any) {
-        pickImage(source: .camera)    }
+        pickImage(source: .camera)
+    }
     
     @IBAction func pickAnImageFromAlbumPressed(_ sender: Any) {
         pickImage(source: .photoLibrary)
@@ -116,19 +144,46 @@ class MemeEditorViewController: UIViewController {
 
     //Pinch Gesture for zoom in and zoom out
     @IBAction func scaleImg(_ sender: UIPinchGestureRecognizer) {
-       imagePickerView.transform = CGAffineTransform(scaleX: sender.scale, y: sender.scale)
+        imagePickerView.transform = CGAffineTransform(scaleX: sender.scale, y: sender.scale)
     }
 
     //MARK: - Methods
 
-    func saveImage() {
+    func enableShareButton() {
+        if imagePickerView.image == nil {
+            shareButton.isEnabled = false
+        } else {
+            shareButton.isEnabled = true
+        }
+    }
+
+
+    func saveMeme() {
+
+        let generateID = UUID.init()
 
         guard let topText = topTextField.text,
               let bottomText = bottomTextField.text,
               let image = imagePickerView.image,
               let memeImage = generateMemedImage() else { return }
 
-        let meme = Meme(topTexField: topText, bottomTextField: bottomText, originalImage: image, memedImage: memeImage)
+        if let existingMeme = self.meme {
+            let meme = Meme(id: existingMeme.id, createdDate: Date.now, topTexField: topText, bottomTextField: bottomText, originalImage: image, memedImage: memeImage)
+
+            // Add it to the memes array on the application delegate
+            let object = UIApplication.shared.delegate
+            let appDelegate = object as! AppDelegate
+            appDelegate.memes[existingMeme.id] = meme
+            debugPrint(meme)
+        } else {
+            let meme = Meme(id: generateID, createdDate: Date.now, topTexField: topText, bottomTextField: bottomText, originalImage: image, memedImage: memeImage)
+
+            // Add it to the memes array on the application delegate
+            let object = UIApplication.shared.delegate
+            let appDelegate = object as! AppDelegate
+            appDelegate.memes[meme.id] = meme
+            debugPrint(meme)
+        }
 
         PHPhotoLibrary.shared().performChanges {
             _ = PHAssetChangeRequest.creationRequestForAsset(from: memeImage)
@@ -136,12 +191,6 @@ class MemeEditorViewController: UIViewController {
             
         }
 
-        // Add it to the memes array on the application delegate
-        let object = UIApplication.shared.delegate
-        let appDelegate = object as! AppDelegate
-        appDelegate.memes.append(meme)
-
-        debugPrint(meme)
         debugPrint("image saved")
     }
 
@@ -169,15 +218,21 @@ class MemeEditorViewController: UIViewController {
             NSAttributedString.Key.font: UIFont(name: "HelveticaNeue-CondensedBlack", size: 55)!,
             NSAttributedString.Key.strokeWidth: -5
         ]
-
         textField.defaultTextAttributes = textAttributes
         textField.textAlignment = .center
-
     }
 
-    func setupPlaceHolder() {
-        topTextField.text = "TOP"
-        bottomTextField.text = "BOTTOM"
+    func setup() {
+
+        if let existingMeme = self.meme {
+            topTextField.text = existingMeme.topTexField
+            bottomTextField.text = existingMeme.bottomTextField
+            imagePickerView.image = existingMeme.originalImage
+        } else {
+            topTextField.text = "TOP"
+            bottomTextField.text = "BOTTOM"
+            imagePickerView.image = nil
+        }
     }
 
     func activityViewController(activityViewController: UIActivityViewController, thumbnailImageForActivityType activityType: String!, suggestedSize size: CGSize) -> UIImage! {
