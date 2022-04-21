@@ -14,6 +14,7 @@ class MemeEditorViewController: UIViewController {
 
     // MARK: Outlets
 
+    @IBOutlet weak var stackView: UIStackView!
     @IBOutlet weak var shareButton: UIBarButtonItem!
     @IBOutlet weak var cancelButton: UIBarButtonItem!
     @IBOutlet weak var cameraButton: UIBarButtonItem!
@@ -153,6 +154,8 @@ class MemeEditorViewController: UIViewController {
         let scale = sender.scale
         imagePickerView.transform = imagePickerView.transform.scaledBy(x: scale, y: scale)
         sender.scale = 1
+        debugPrint("gesture scale")
+
     }
 
     @IBAction func rotateImage(_ sender: UIRotationGestureRecognizer) {
@@ -162,7 +165,14 @@ class MemeEditorViewController: UIViewController {
         let rotation = sender.rotation
         imagePickerView.transform = imagePickerView.transform.rotated(by: rotation)
         sender.rotation = 0
+        debugPrint("gesture rotate")
     }
+
+    @IBAction func tapGesture(_ sender: UITapGestureRecognizer) {
+        stackView.isUserInteractionEnabled = true
+        debugPrint("touch")
+    }
+
 
     //MARK: - Methods
 
@@ -266,7 +276,7 @@ class MemeEditorViewController: UIViewController {
     }
 }
 
-//MARK: - UIImagePickerControllerDelegate
+    //MARK: - UIImagePickerControllerDelegate
 
 extension MemeEditorViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
@@ -294,7 +304,7 @@ extension MemeEditorViewController: UIImagePickerControllerDelegate, UINavigatio
     }
 }
 
-//MARK: - UITextFieldDelegate
+    //MARK: - UITextFieldDelegate
 
 extension MemeEditorViewController: UITextFieldDelegate {
 
@@ -320,6 +330,7 @@ extension MemeEditorViewController: UITextFieldDelegate {
             textField.text = "BOTTOM"
         }
         setupTextField(textField: textField)
+        stackView.isUserInteractionEnabled = false
     }
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -359,6 +370,8 @@ extension MemeEditorViewController: UITextFieldDelegate {
     }
 }
 
+    //MARK: - UIGestureRecognizerDelegate
+
 extension MemeEditorViewController: UIGestureRecognizerDelegate {
 
     func applyGestureRecognizer() {
@@ -375,4 +388,14 @@ extension MemeEditorViewController: UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
+
+//    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
+//             shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+//       // Don't recognize a single tap until a double-tap fails.
+//       if gestureRecognizer == tapGesture &&
+//              otherGestureRecognizer == scaleImage(UIPinchGestureRecognizer) {
+//          return true
+//       }
+//       return false
+//    }
 }
