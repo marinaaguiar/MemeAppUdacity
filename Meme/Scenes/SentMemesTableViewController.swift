@@ -28,7 +28,7 @@ class SentMemesTableViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        tableView.reloadData()
+        didLoad()
         tabBarController?.tabBar.isHidden = false
         enableEditButton()
     }
@@ -51,6 +51,13 @@ class SentMemesTableViewController: UIViewController {
     }
 
     // MARK: Methods
+
+    func didLoad() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.tableView.reloadData()
+        }
+    }
 
     func enableEditButton() {
 

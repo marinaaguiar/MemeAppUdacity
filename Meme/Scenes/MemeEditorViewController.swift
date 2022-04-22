@@ -23,6 +23,8 @@ class MemeEditorViewController: UIViewController {
     @IBOutlet weak var topTextField: UITextField!
     @IBOutlet weak var bottomTextField: UITextField!
     @IBOutlet weak var memeView: UIView!
+    @IBOutlet weak var imageView: UIView!
+
 
     // MARK: Lifecycle Methods
 
@@ -66,8 +68,11 @@ class MemeEditorViewController: UIViewController {
 
             if completed {
                 debugPrint("share completed")
-                self.saveMeme()
-                self.dismiss()
+                DispatchQueue.main.async { [weak self] in
+                    guard let self = self else { return }
+                    self.saveMeme()
+                    self.dismiss()
+                }
                 return
             } else {
                 debugPrint("cancel")
@@ -86,7 +91,8 @@ class MemeEditorViewController: UIViewController {
 
             // Create Save button with action handler
             let save = UIAlertAction(title: "Save", style: .default) { (action) -> Void in
-                DispatchQueue.global(qos: .userInitiated).async {
+                DispatchQueue.main.async { [weak self] in
+                    guard let self = self else { return }
                     self.saveMeme()
                 }
                 self.dismiss()
@@ -146,7 +152,7 @@ class MemeEditorViewController: UIViewController {
     @IBAction func pickAnImageFromAlbumPressed(_ sender: Any) {
         pickImage(source: .photoLibrary)
     }
-
+    
     @IBAction func scaleImage(_ sender: UIPinchGestureRecognizer) {
         guard let imagePickerView = imagePickerView else {
           return
@@ -190,7 +196,7 @@ class MemeEditorViewController: UIViewController {
 
         guard let topText = topTextField.text,
               let bottomText = bottomTextField.text,
-              let image = imagePickerView.image,
+              let image = generateEditedImage(),
               let memeImage = generateMemedImage() else { return }
 
         if let existingMeme = self.meme {
@@ -221,12 +227,18 @@ class MemeEditorViewController: UIViewController {
     }
 
     func generateMemedImage() -> UIImage? {
-
         let renderer = UIGraphicsImageRenderer(bounds: memeView.bounds)
-        
         return renderer.image { context in
             memeView.layer.render(in: context.cgContext)
             memeView.draw(memeView.layer, in: context.cgContext)
+        }
+    }
+
+    func generateEditedImage() -> UIImage? {
+        let renderer = UIGraphicsImageRenderer(bounds: imageView.bounds)
+        return renderer.image { context in
+            imageView.layer.render(in: context.cgContext)
+            imageView.draw(memeView.layer, in: context.cgContext)
         }
     }
     
@@ -388,14 +400,4 @@ extension MemeEditorViewController: UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
-
-//    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
-//             shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-//       // Don't recognize a single tap until a double-tap fails.
-//       if gestureRecognizer == tapGesture &&
-//              otherGestureRecognizer == scaleImage(UIPinchGestureRecognizer) {
-//          return true
-//       }
-//       return false
-//    }
 }
