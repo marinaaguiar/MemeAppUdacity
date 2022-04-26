@@ -39,11 +39,18 @@ class SentMemesCollectionViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        collectionView.reloadData()
+        didLoad()
         tabBarController?.tabBar.isHidden = false
     }
 
     // MARK: Methods
+
+    func didLoad() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.collectionView.reloadData()
+        }
+    }
 
     func setFlowLayout() {
         let space: CGFloat = 4.0

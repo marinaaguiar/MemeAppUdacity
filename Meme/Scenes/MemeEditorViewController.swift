@@ -11,6 +11,7 @@ class MemeEditorViewController: UIViewController {
     var activeTextField: UITextField? = nil
     var meme: Meme?
     let id: UUID = UUID.init()
+    var initialCenter = CGPoint()  // The initial center point of the view.
 
     // MARK: Outlets
 
@@ -24,12 +25,14 @@ class MemeEditorViewController: UIViewController {
     @IBOutlet weak var bottomTextField: UITextField!
     @IBOutlet weak var memeView: UIView!
     @IBOutlet weak var imageView: UIView!
+    @IBOutlet weak var pinchGestureRecognizer: UIPinchGestureRecognizer!
 
 
     // MARK: Lifecycle Methods
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        pinchGestureRecognizer.delegate = self
         setup()
         setupTextField(textField: topTextField)
         setupTextField(textField: bottomTextField)
@@ -152,26 +155,27 @@ class MemeEditorViewController: UIViewController {
     @IBAction func pickAnImageFromAlbumPressed(_ sender: Any) {
         pickImage(source: .photoLibrary)
     }
-    
-    @IBAction func scaleImage(_ sender: UIPinchGestureRecognizer) {
-        guard let imagePickerView = imagePickerView else {
-          return
-        }
-        let scale = sender.scale
-        imagePickerView.transform = imagePickerView.transform.scaledBy(x: scale, y: scale)
-        sender.scale = 1
-        debugPrint("gesture scale")
 
+    @IBAction func scaleImage(_ sender: UIPinchGestureRecognizer) {
+        guard let imagePickerView = imagePickerView else { return }
+
+        if sender.state == .began || sender.state == .changed {
+            let scale = sender.scale
+            imagePickerView.transform = imagePickerView.transform.scaledBy(x: scale, y: scale)
+            sender.scale = 1
+            debugPrint("gesture scale")
+        }
     }
 
     @IBAction func rotateImage(_ sender: UIRotationGestureRecognizer) {
-        guard let imagePickerView = imagePickerView else {
-          return
+        guard let imagePickerView = imagePickerView else { return }
+
+        if sender.state == .began || sender.state == .changed {
+            let rotation = sender.rotation
+            imagePickerView.transform = imagePickerView.transform.rotated(by: rotation)
+            sender.rotation = 0
+            debugPrint("gesture rotate")
         }
-        let rotation = sender.rotation
-        imagePickerView.transform = imagePickerView.transform.rotated(by: rotation)
-        sender.rotation = 0
-        debugPrint("gesture rotate")
     }
 
     @IBAction func tapGesture(_ sender: UITapGestureRecognizer) {
@@ -368,6 +372,7 @@ extension MemeEditorViewController: UITextFieldDelegate {
             // if the bottom of Textfield is below the top of keyboard, move up
             if bottomTextField > topOfKeyboard {
                 shouldMoveViewUp = true
+
             }
         }
 

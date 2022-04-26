@@ -193,6 +193,7 @@
                         <subviews>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jYb-aQ-nK2">
                                 <rect key="frame" x="0.0" y="734" width="375" height="44"/>
+                                <gestureRecognizers/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="zaz-tr-NEg"/>
                                 </constraints>
@@ -304,6 +305,7 @@
                         <outlet property="imagePickerView" destination="NCb-3n-6K4" id="Rdu-Bo-gif"/>
                         <outlet property="imageView" destination="D8c-jt-cpw" id="umu-a0-E58"/>
                         <outlet property="memeView" destination="J0L-pg-TIh" id="oIN-28-2Qx"/>
+                        <outlet property="pinchGestureRecognizer" destination="1cb-gl-HMT" id="yyS-Wr-uXp"/>
                         <outlet property="shareButton" destination="vVs-Fb-bac" id="xK4-6h-aIe"/>
                         <outlet property="stackView" destination="8Vz-qg-bVV" id="g4T-Zp-FsA"/>
                         <outlet property="topTextField" destination="XAN-ge-FK8" id="SVU-My-FEZ"/>

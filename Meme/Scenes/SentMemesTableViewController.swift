@@ -38,7 +38,6 @@ class SentMemesTableViewController: UIViewController {
     @IBAction func editButtonPressed(_ sender: Any) {
 
         if tableView.isEditing == false {
-            // Toggle table view editing.
             editButton.style = .done
             editButton.title = "Done"
             tableView.setEditing(true, animated: true)
