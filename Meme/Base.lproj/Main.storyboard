@@ -193,42 +193,65 @@
                         <subviews>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jYb-aQ-nK2">
                                 <rect key="frame" x="0.0" y="734" width="375" height="44"/>
+                                <gestureRecognizers/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="zaz-tr-NEg"/>
                                 </constraints>
                                 <items>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="bLI-a3-Oda"/>
-                                    <barButtonItem systemItem="camera" id="MzK-m9-8b5">
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="anQ-P0-5yr"/>
+                                    <barButtonItem title="Camera" image="camera" catalog="system" id="MzK-m9-8b5">
                                         <connections>
-                                            <action selector="pickAnImageFromCameraPressed:" destination="JFd-en-aPd" id="PKN-DU-Vx6"/>
+                                            <action selector="pickAnImageFromCameraPressed:" destination="JFd-en-aPd" id="2cV-n4-kQM"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="jqg-gE-KmO"/>
-                                    <barButtonItem title="Album" id="O1n-jv-RAq">
+                                    <barButtonItem width="42" style="plain" systemItem="fixedSpace" id="bLI-a3-Oda"/>
+                                    <barButtonItem width="42" style="plain" systemItem="fixedSpace" id="jqg-gE-KmO"/>
+                                    <barButtonItem title="Album" image="photo.on.rectangle.angled" catalog="system" id="O1n-jv-RAq">
                                         <connections>
                                             <action selector="pickAnImageFromAlbumPressed:" destination="JFd-en-aPd" id="BEA-z7-UWm"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="eS6-hP-VGP"/>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="cs7-mc-S0M"/>
                                 </items>
                             </toolbar>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="J0L-pg-TIh">
+                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="J0L-pg-TIh">
                                 <rect key="frame" x="0.0" y="88" width="375" height="646"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="NCb-3n-6K4">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="D8c-jt-cpw">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="646"/>
-                                    </imageView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="8Vz-qg-bVV">
+                                        <subviews>
+                                            <imageView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" preservesSuperviewLayoutMargins="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NCb-3n-6K4">
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="646"/>
+                                                <gestureRecognizers/>
+                                                <connections>
+                                                    <outletCollection property="gestureRecognizers" destination="1cb-gl-HMT" appends="YES" id="PIZ-om-ZZ2"/>
+                                                    <outletCollection property="gestureRecognizers" destination="x6O-4s-pIz" appends="YES" id="T4b-t6-0mq"/>
+                                                    <outletCollection property="gestureRecognizers" destination="Tn7-78-DYp" appends="YES" id="tcD-fu-rgD"/>
+                                                </connections>
+                                            </imageView>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstItem="NCb-3n-6K4" firstAttribute="top" secondItem="D8c-jt-cpw" secondAttribute="top" id="4pp-5e-bfR"/>
+                                            <constraint firstItem="NCb-3n-6K4" firstAttribute="leading" secondItem="D8c-jt-cpw" secondAttribute="leading" id="774-qL-pvY"/>
+                                            <constraint firstItem="NCb-3n-6K4" firstAttribute="centerY" secondItem="D8c-jt-cpw" secondAttribute="centerY" id="UKK-68-a0R"/>
+                                            <constraint firstAttribute="trailing" secondItem="NCb-3n-6K4" secondAttribute="trailing" id="pEe-yj-FGX"/>
+                                            <constraint firstItem="NCb-3n-6K4" firstAttribute="centerX" secondItem="D8c-jt-cpw" secondAttribute="centerX" id="sCw-fZ-LfP"/>
+                                        </constraints>
+                                    </view>
+                                    <stackView opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="8Vz-qg-bVV">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="646"/>
                                         <subviews>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="top text" textAlignment="center" minimumFontSize="15" translatesAutoresizingMaskIntoConstraints="NO" id="XAN-ge-FK8">
                                                 <rect key="frame" x="123" y="0.0" width="129" height="323"/>
+                                                <gestureRecognizers/>
                                                 <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="40"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters"/>
                                             </textField>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="bottom text" textAlignment="center" minimumFontSize="15" translatesAutoresizingMaskIntoConstraints="NO" id="1wf-bE-vqr">
                                                 <rect key="frame" x="90" y="323" width="195" height="323"/>
+                                                <gestureRecognizers/>
                                                 <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="40"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters"/>
@@ -238,18 +261,14 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstItem="NCb-3n-6K4" firstAttribute="centerY" secondItem="J0L-pg-TIh" secondAttribute="centerY" id="1Ic-ln-xzD"/>
-                                    <constraint firstItem="8Vz-qg-bVV" firstAttribute="centerY" secondItem="NCb-3n-6K4" secondAttribute="centerY" id="1eK-s0-xV0"/>
-                                    <constraint firstItem="8Vz-qg-bVV" firstAttribute="leading" secondItem="NCb-3n-6K4" secondAttribute="leading" id="95m-N4-MVj"/>
-                                    <constraint firstItem="8Vz-qg-bVV" firstAttribute="bottom" secondItem="NCb-3n-6K4" secondAttribute="bottom" id="BXh-Qv-T9U"/>
-                                    <constraint firstItem="8Vz-qg-bVV" firstAttribute="centerX" secondItem="NCb-3n-6K4" secondAttribute="centerX" id="Da0-PX-5mi"/>
-                                    <constraint firstItem="NCb-3n-6K4" firstAttribute="centerX" secondItem="J0L-pg-TIh" secondAttribute="centerX" id="O1a-rg-tm1"/>
-                                    <constraint firstItem="8Vz-qg-bVV" firstAttribute="trailing" secondItem="NCb-3n-6K4" secondAttribute="trailing" id="VbF-1p-LY4"/>
-                                    <constraint firstItem="NCb-3n-6K4" firstAttribute="top" secondItem="J0L-pg-TIh" secondAttribute="top" id="dl5-Hl-vXG"/>
-                                    <constraint firstItem="8Vz-qg-bVV" firstAttribute="top" secondItem="NCb-3n-6K4" secondAttribute="top" id="k2W-HS-ids"/>
-                                    <constraint firstAttribute="trailing" secondItem="NCb-3n-6K4" secondAttribute="trailing" id="mQ2-3d-s8r"/>
-                                    <constraint firstItem="NCb-3n-6K4" firstAttribute="leading" secondItem="J0L-pg-TIh" secondAttribute="leading" id="qCP-DY-vcv"/>
-                                    <constraint firstAttribute="bottom" secondItem="NCb-3n-6K4" secondAttribute="bottom" id="rgc-bj-MXn"/>
+                                    <constraint firstAttribute="trailing" secondItem="8Vz-qg-bVV" secondAttribute="trailing" id="2XQ-ta-NeY"/>
+                                    <constraint firstItem="D8c-jt-cpw" firstAttribute="top" secondItem="J0L-pg-TIh" secondAttribute="top" id="7Gn-gQ-pkI"/>
+                                    <constraint firstItem="8Vz-qg-bVV" firstAttribute="top" secondItem="J0L-pg-TIh" secondAttribute="top" id="C5G-8k-4gc"/>
+                                    <constraint firstItem="D8c-jt-cpw" firstAttribute="leading" secondItem="J0L-pg-TIh" secondAttribute="leading" id="CtN-ex-IRk"/>
+                                    <constraint firstAttribute="trailing" secondItem="D8c-jt-cpw" secondAttribute="trailing" id="HIN-jU-u2a"/>
+                                    <constraint firstAttribute="bottom" secondItem="D8c-jt-cpw" secondAttribute="bottom" id="J19-z6-NKF"/>
+                                    <constraint firstAttribute="bottom" secondItem="8Vz-qg-bVV" secondAttribute="bottom" id="XaN-w4-WG9"/>
+                                    <constraint firstItem="8Vz-qg-bVV" firstAttribute="leading" secondItem="J0L-pg-TIh" secondAttribute="leading" id="kr4-NU-mtI"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -265,15 +284,16 @@
                             <constraint firstItem="J0L-pg-TIh" firstAttribute="trailing" secondItem="wnP-Uo-DWv" secondAttribute="trailing" id="nga-Bt-YhM"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Create Meme" id="u5B-Uo-eEu">
-                        <barButtonItem key="leftBarButtonItem" systemItem="action" id="iAD-RU-erK">
+                    <navigationItem key="navigationItem" title="Create Meme" id="RKV-BK-BQ3">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="uPj-6B-2NM"/>
+                        <barButtonItem key="leftBarButtonItem" title="Back" id="iER-VT-y6O">
                             <connections>
-                                <action selector="shareButtonPressed:" destination="JFd-en-aPd" id="6OO-yn-Wxf"/>
+                                <action selector="cancelButtonPressed:" destination="JFd-en-aPd" id="AWg-OU-cxo"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="cancel" id="PcR-wI-DYL">
+                        <barButtonItem key="rightBarButtonItem" systemItem="action" id="vVs-Fb-bac">
                             <connections>
-                                <action selector="cancelButtonPressed:" destination="JFd-en-aPd" id="J5E-vG-bMr"/>
+                                <action selector="shareButtonPressed:" destination="JFd-en-aPd" id="Nhq-hB-Mkt"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -281,14 +301,32 @@
                         <outlet property="albumButton" destination="O1n-jv-RAq" id="Wju-dx-fqA"/>
                         <outlet property="bottomTextField" destination="1wf-bE-vqr" id="zIe-ML-eZq"/>
                         <outlet property="cameraButton" destination="MzK-m9-8b5" id="XSf-MB-Fsj"/>
-                        <outlet property="cancelButton" destination="PcR-wI-DYL" id="PnU-9R-Ifh"/>
+                        <outlet property="cancelButton" destination="iER-VT-y6O" id="RAS-Ak-3S9"/>
                         <outlet property="imagePickerView" destination="NCb-3n-6K4" id="Rdu-Bo-gif"/>
+                        <outlet property="imageView" destination="D8c-jt-cpw" id="umu-a0-E58"/>
                         <outlet property="memeView" destination="J0L-pg-TIh" id="oIN-28-2Qx"/>
-                        <outlet property="shareButton" destination="iAD-RU-erK" id="Eco-Mp-W9C"/>
+                        <outlet property="pinchGestureRecognizer" destination="1cb-gl-HMT" id="yyS-Wr-uXp"/>
+                        <outlet property="shareButton" destination="vVs-Fb-bac" id="xK4-6h-aIe"/>
+                        <outlet property="stackView" destination="8Vz-qg-bVV" id="g4T-Zp-FsA"/>
                         <outlet property="topTextField" destination="XAN-ge-FK8" id="SVU-My-FEZ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OGe-X5-Job" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <rotationGestureRecognizer id="Tn7-78-DYp">
+                    <connections>
+                        <action selector="rotateImage:" destination="JFd-en-aPd" id="Dnz-mq-isx"/>
+                    </connections>
+                </rotationGestureRecognizer>
+                <pinchGestureRecognizer id="1cb-gl-HMT">
+                    <connections>
+                        <action selector="scaleImage:" destination="JFd-en-aPd" id="f28-hD-aGx"/>
+                    </connections>
+                </pinchGestureRecognizer>
+                <tapGestureRecognizer id="x6O-4s-pIz">
+                    <connections>
+                        <action selector="tapGesture:" destination="JFd-en-aPd" id="VAP-gR-vOb"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="4438" y="-897"/>
         </scene>
@@ -305,7 +343,7 @@
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="KSa-l6-kQJ"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="KSa-l6-kQJ" firstAttribute="trailing" secondItem="Ewn-8U-1YW" secondAttribute="trailing" id="Eja-Sg-mNT"/>
                             <constraint firstItem="KSa-l6-kQJ" firstAttribute="bottom" secondItem="Ewn-8U-1YW" secondAttribute="bottom" id="Zqu-Tb-cPJ"/>
@@ -371,6 +409,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="E1S-pV-BhE" sceneMemberID="viewController">
                     <toolbarItems/>
+                    <navigationItem key="navigationItem" id="MF9-Ss-fNX"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="MG8-ri-njf">
                         <rect key="frame" x="0.0" y="44" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -382,7 +421,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tjU-LD-lr4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3495" y="-897"/>
+            <point key="canvasLocation" x="3657" y="-897"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="3aO-cq-Ma3">
@@ -392,6 +431,8 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="NOd-H2-35M">
                         <rect key="frame" x="0.0" y="44" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="barTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
@@ -407,7 +448,9 @@
         <segue reference="T1h-Xh-sD0"/>
     </inferredMetricsTieBreakers>
     <resources>
+        <image name="camera" catalog="system" width="128" height="94"/>
         <image name="line.3.horizontal" catalog="system" width="128" height="64"/>
+        <image name="photo.on.rectangle.angled" catalog="system" width="128" height="100"/>
         <image name="square.grid.2x2" catalog="system" width="128" height="114"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
