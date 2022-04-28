@@ -51,7 +51,7 @@ class MemeEditorViewController: UIViewController {
     
     @IBAction func shareButtonPressed(_ sender: Any) {
         
-        guard let memedImage = generateMemedImage() else {
+        guard let memedImage = generateMemedImage(from: memeView) else {
             let alert = UIAlertController(title: "Failed to generate meme image", message: "Please try again.", preferredStyle: .alert)
 
             alert.addAction(.init(title: "OK", style: .default, handler: { _ in
@@ -200,8 +200,8 @@ class MemeEditorViewController: UIViewController {
 
         guard let topText = topTextField.text,
               let bottomText = bottomTextField.text,
-              let image = generateEditedImage(),
-              let memeImage = generateMemedImage() else { return }
+              let image = generateMemedImage(from: imageView),
+              let memeImage = generateMemedImage(from: memeView) else { return }
 
         if let existingMeme = self.meme {
             let meme = Meme(id: existingMeme.id, createdDate: Date.now, topTexField: topText, bottomTextField: bottomText, originalImage: image, memedImage: memeImage)
@@ -230,19 +230,11 @@ class MemeEditorViewController: UIViewController {
         debugPrint("image saved")
     }
 
-    func generateMemedImage() -> UIImage? {
-        let renderer = UIGraphicsImageRenderer(bounds: memeView.bounds)
+    func generateMemedImage(from view: UIView) -> UIImage? {
+        let renderer = UIGraphicsImageRenderer(bounds: view.bounds)
         return renderer.image { context in
-            memeView.layer.render(in: context.cgContext)
-            memeView.draw(memeView.layer, in: context.cgContext)
-        }
-    }
-
-    func generateEditedImage() -> UIImage? {
-        let renderer = UIGraphicsImageRenderer(bounds: imageView.bounds)
-        return renderer.image { context in
-            imageView.layer.render(in: context.cgContext)
-            imageView.draw(memeView.layer, in: context.cgContext)
+            view.layer.render(in: context.cgContext)
+            view.draw(view.layer, in: context.cgContext)
         }
     }
     
